@@ -1,3 +1,6 @@
+
+
+
 package net.kzn.shoppingbackend.dto;
 
 import java.io.Serializable;

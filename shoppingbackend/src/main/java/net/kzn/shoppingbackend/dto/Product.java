@@ -3,13 +3,17 @@ package net.kzn.shoppingbackend.dto;
 
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 
@@ -62,6 +66,14 @@ public class Product implements Serializable {
 		this.file = file;
 	}
 
+
+
+@OneToMany(mappedBy="product", cascade = CascadeType.ALL)
+ @JsonIgnore
+ private List<Review> reviews;
+
+//  @Column(name="rating", columnDefinition = "int default 0")
+// private int rating;
 
 	// default constructor
 	public Product() {
@@ -148,8 +160,19 @@ public class Product implements Serializable {
 	public void setViews(int views) {
 		this.views = views;
 	}
-
 	
+	
+
+
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+
 	// toString for debugging
 	@Override
 	public String toString() {

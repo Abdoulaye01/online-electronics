@@ -31,6 +31,8 @@ public class CartLine implements Serializable {
 	private double total;
 	@Column(name = "buying_price")
 	private double buyingPrice;
+	
+	
 	public double getBuyingPrice() {
 		return buyingPrice;
 	}

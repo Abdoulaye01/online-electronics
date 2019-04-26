@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.kzn.shoppingbackend.dao.ProductDAO;
+import net.kzn.shoppingbackend.dto.OrderDetail;
 import net.kzn.shoppingbackend.dto.Product;
+import net.kzn.shoppingbackend.dto.Review;
 
 
 @Repository("productDAO")
@@ -145,5 +147,9 @@ public class ProductDAOImpl implements ProductDAO {
 					
 		
 	}
+
+
+	
+
 
 }

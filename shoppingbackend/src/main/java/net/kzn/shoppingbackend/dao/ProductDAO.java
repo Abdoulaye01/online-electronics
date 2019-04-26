@@ -3,6 +3,7 @@ package net.kzn.shoppingbackend.dao;
 import java.util.List;
 
 import net.kzn.shoppingbackend.dto.Product;
+import net.kzn.shoppingbackend.dto.Review;
 
 public interface ProductDAO {
 
@@ -19,5 +20,8 @@ public interface ProductDAO {
 	List<Product> listActiveProducts();	
 	List<Product> listActiveProductsByCategory(int categoryId);
 	List<Product> getLatestActiveProducts(int count);
+	
+	
+
 	
 }
