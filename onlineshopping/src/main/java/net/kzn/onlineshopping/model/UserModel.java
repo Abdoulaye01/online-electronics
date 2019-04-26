@@ -14,6 +14,8 @@ public class UserModel implements Serializable {
 	private int id;
 	private String fullName;
 	private String role;
+	
+	
 	public String getRole() {
 		return role;
 	}

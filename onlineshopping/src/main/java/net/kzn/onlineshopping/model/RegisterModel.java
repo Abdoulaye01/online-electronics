@@ -15,6 +15,8 @@ public class RegisterModel implements Serializable {
 	
 	private User user;
 	private Address billing;
+	
+	
 	public User getUser() {
 		return user;
 	}

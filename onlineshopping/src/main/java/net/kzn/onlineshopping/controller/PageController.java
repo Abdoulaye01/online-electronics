@@ -1,8 +1,5 @@
 package net.kzn.onlineshopping.controller;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 import net.kzn.onlineshopping.exception.ProductNotFoundException;
 import net.kzn.shoppingbackend.dao.CategoryDAO;
 import net.kzn.shoppingbackend.dao.ProductDAO;
+import net.kzn.shoppingbackend.dao.ReviewDAO;
+import net.kzn.shoppingbackend.dao.UserDAO;
 import net.kzn.shoppingbackend.dto.Category;
 import net.kzn.shoppingbackend.dto.Product;
+import net.kzn.shoppingbackend.dto.Review;
+import net.kzn.shoppingbackend.dto.User;
 
 @Controller
 public class PageController {
@@ -34,6 +36,12 @@ public class PageController {
 	
 	@Autowired
 	private ProductDAO productDAO;
+	
+	@Autowired
+	private ReviewDAO reviewDAO;
+	
+	@Autowired
+	private UserDAO userDAO;
 	
 	@RequestMapping(value = {"/", "/home", "/index"})
 	public ModelAndView index(@RequestParam(name="logout",required=false)String logout) {		
@@ -115,11 +123,13 @@ public class PageController {
 	 * */
 	
 	@RequestMapping(value = "/show/{id}/product") 
-	public ModelAndView showSingleProduct(@PathVariable int id) throws ProductNotFoundException {
+	public ModelAndView showSingleProduct(@PathVariable int id,Model model,HttpServletRequest request) throws ProductNotFoundException {
 		
 		ModelAndView mv = new ModelAndView("page");
 		
 		Product product = productDAO.get(id);
+		
+		
 		
 		if(product == null) throw new ProductNotFoundException();
 		
@@ -130,10 +140,17 @@ public class PageController {
 		
 		mv.addObject("title", product.getName());
 		mv.addObject("product", product);
+		//model.addAttribute("review",reviewDAO.getProduct(product));
+		
 		
 		mv.addObject("userClickShowProduct", true);
 		
 		
+		  if(request.getSession().getAttribute("user_id") != null){
+	            Review productComment = new Review();
+	            productComment.setUserId((id));
+	            model.addAttribute("productComment", productComment);
+	        }
 		return mv;
 		
 	}
@@ -185,6 +202,8 @@ public class PageController {
 		return mv;
 	}	
 		
+	
+
 	
 	
 }

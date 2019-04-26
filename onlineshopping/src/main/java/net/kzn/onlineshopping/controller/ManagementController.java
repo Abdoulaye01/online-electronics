@@ -1,5 +1,6 @@
 package net.kzn.onlineshopping.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +24,12 @@ import net.kzn.onlineshopping.util.FileUtil;
 import net.kzn.onlineshopping.validator.ProductValidator;
 import net.kzn.shoppingbackend.dao.CategoryDAO;
 import net.kzn.shoppingbackend.dao.ProductDAO;
+import net.kzn.shoppingbackend.dao.ReviewDAO;
+import net.kzn.shoppingbackend.dao.UserDAO;
 import net.kzn.shoppingbackend.dto.Category;
 import net.kzn.shoppingbackend.dto.Product;
+import net.kzn.shoppingbackend.dto.Review;
+import net.kzn.shoppingbackend.dto.User;
 
 @Controller
 @RequestMapping("/manage")
@@ -36,7 +41,13 @@ public class ManagementController {
 	private ProductDAO productDAO;
 	
 	@Autowired
-	private CategoryDAO categoryDAO;		
+	private CategoryDAO categoryDAO;
+	
+	@Autowired
+    private ReviewDAO reviewDAO;
+  	
+	@Autowired
+    private UserDAO userDAO;
 
 	@RequestMapping("/product")
 	public ModelAndView manageProduct(@RequestParam(name="success",required=false)String success) {		
@@ -150,7 +161,26 @@ public class ManagementController {
 	@ModelAttribute("category")
 	public Category modelCategory() {
 		return new Category();
+		
+		
 	}
+	@RequestMapping(value ="/review", method=RequestMethod.POST )
+	   public String addProductReview(@ModelAttribute("review")Review review, int productId, BindingResult result, Model model) {
+			
+			
+            review.setCreated(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			Product product = productDAO.get(productId);
+			review.setProduct(product);
+			reviewDAO.add(review);
+			
+			model.addAttribute("rating", review.getRating());
+			model.addAttribute("comment", review.getComment());
+	
+			return "/show/{id}/product";
+		}
+	
+
+
 	
 	
 }
